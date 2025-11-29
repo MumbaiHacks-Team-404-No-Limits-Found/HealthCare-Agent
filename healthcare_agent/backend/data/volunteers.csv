@@ -1,0 +1,16 @@
+volunteer_id,name,phone,skills,no_show_rate,city,preferred_slots
+VOL001,Anita Rao,+919800000001,"triage_nurse,registration",0.08,Bangalore,morning
+VOL002,Rohit Sharma,+919800000002,doctor,0.12,Bangalore,"morning,afternoon"
+VOL003,Meera Iyer,+919800000003,"registration,pharmacy",0.05,Bangalore,afternoon
+VOL004,Sameer Khan,+919800000004,triage_nurse,0.18,Bangalore,morning
+VOL005,Lata Krishnan,+919800000005,"doctor,diabetes_specialist",0.1,Bangalore,morning
+VOL006,Vikram Desai,+919800000006,pharmacy,0.22,Bangalore,afternoon
+VOL007,Priya Nair,+919800000007,"triage_nurse,doctor",0.07,Bangalore,"morning,afternoon"
+VOL008,Harish Kulkarni,+919800000008,registration,0.3,Bangalore,morning
+VOL009,Kavya Menon,+919800000009,"triage_nurse,pharmacy",0.15,Bangalore,afternoon
+VOL010,Arjun Reddy,+919800000010,doctor,0.35,Bangalore,"morning,afternoon"
+VOL011,Sneha Patil,+919800000011,"registration,triage_nurse",0.09,Bangalore,evening
+VOL012,Deepak Joshi,+919800000012,pharmacy,0.28,Bangalore,afternoon
+VOL013,Chitra Sen,+919800000013,triage_nurse,0.06,Bangalore,morning
+VOL014,Sanjay Mehta,+919800000014,"doctor,diabetes_specialist",0.2,Bangalore,morning
+VOL015,Neha Gupta,+919800000015,"registration,pharmacy",0.13,Bangalore,afternoon

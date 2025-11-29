@@ -1,0 +1,25 @@
+camp_id,date,location,camp_type,slot,patients
+CAMP001,2025-01-05,MG Road Clinic,general,morning,210
+CAMP001,2025-01-05,MG Road Clinic,general,afternoon,180
+CAMP001,2025-01-12,MG Road Clinic,general,morning,230
+CAMP001,2025-01-12,MG Road Clinic,general,afternoon,195
+CAMP001,2025-01-19,MG Road Clinic,general,morning,205
+CAMP001,2025-01-19,MG Road Clinic,general,afternoon,175
+CAMP001,2025-01-26,MG Road Clinic,general,morning,240
+CAMP001,2025-01-26,MG Road Clinic,general,afternoon,200
+CAMP002,2025-02-02,Sunrise Pediatric Centre,pediatric,morning,95
+CAMP002,2025-02-02,Sunrise Pediatric Centre,pediatric,afternoon,80
+CAMP002,2025-02-09,Sunrise Pediatric Centre,pediatric,morning,110
+CAMP002,2025-02-09,Sunrise Pediatric Centre,pediatric,afternoon,90
+CAMP002,2025-02-16,Sunrise Pediatric Centre,pediatric,morning,105
+CAMP002,2025-02-16,Sunrise Pediatric Centre,pediatric,afternoon,88
+CAMP002,2025-02-23,Sunrise Pediatric Centre,pediatric,morning,120
+CAMP002,2025-02-23,Sunrise Pediatric Centre,pediatric,afternoon,95
+CAMP003,2025-03-02,City Diabetes Clinic,diabetes,morning,60
+CAMP003,2025-03-02,City Diabetes Clinic,diabetes,afternoon,55
+CAMP003,2025-03-09,City Diabetes Clinic,diabetes,morning,70
+CAMP003,2025-03-09,City Diabetes Clinic,diabetes,afternoon,58
+CAMP003,2025-03-16,City Diabetes Clinic,diabetes,morning,65
+CAMP003,2025-03-16,City Diabetes Clinic,diabetes,afternoon,52
+CAMP003,2025-03-23,City Diabetes Clinic,diabetes,morning,75
+CAMP003,2025-03-23,City Diabetes Clinic,diabetes,afternoon,60

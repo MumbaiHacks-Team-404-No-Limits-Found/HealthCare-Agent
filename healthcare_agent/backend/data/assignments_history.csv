@@ -1,0 +1,16 @@
+assignment_id,camp_id,volunteer_id,role,slot,status,arrived
+A001,CAMP001,VOL001,triage_nurse,morning,completed,true
+A002,CAMP001,VOL002,doctor,morning,completed,true
+A003,CAMP001,VOL003,registration,morning,completed,true
+A004,CAMP001,VOL004,triage_nurse,morning,no_show,false
+A005,CAMP001,VOL006,pharmacy,afternoon,completed,true
+A006,CAMP001,VOL007,doctor,afternoon,completed,true
+A007,CAMP001,VOL008,registration,afternoon,cancelled,false
+A008,CAMP002,VOL002,doctor,morning,completed,true
+A009,CAMP002,VOL005,doctor,morning,completed,true
+A010,CAMP002,VOL009,triage_nurse,afternoon,completed,true
+A011,CAMP002,VOL010,doctor,afternoon,no_show,false
+A012,CAMP003,VOL014,doctor,morning,completed,true
+A013,CAMP003,VOL006,pharmacy,morning,no_show,false
+A014,CAMP003,VOL013,triage_nurse,morning,completed,true
+A015,CAMP003,VOL015,registration,afternoon,completed,true

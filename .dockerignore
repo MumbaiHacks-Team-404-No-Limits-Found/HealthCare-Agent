@@ -1,0 +1,38 @@
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!DEPLOYMENT.md
+ISSUES_ANALYSIS.md
+FRONTEND_COMPLETE.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example
+env.template
+
+# Test scripts
+*.sh
+test_*.sh
+
+# Logs
+*.log
+logs/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+

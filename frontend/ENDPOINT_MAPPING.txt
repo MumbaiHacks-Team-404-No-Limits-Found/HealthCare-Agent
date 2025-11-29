@@ -1,0 +1,282 @@
+================================================================================
+BACKEND SWAGGER ENDPOINTS → FRONTEND CODE MAPPING
+================================================================================
+
+This document provides CONCRETE PROOF of where each Swagger endpoint is
+implemented in the frontend code with exact file paths and line numbers.
+
+================================================================================
+1. CAMPS ENDPOINTS
+================================================================================
+
+GET /api/camps/ - List Camps
+├─ API Function: lib/apiServices.ts:14-18
+│  export const campsApi = {
+│    list: async (): Promise<Camp[]> => {
+│      const response = await api.get('/api/camps/');
+│      return response.data;
+│    },
+└─ Used in: app/camps/page.tsx:34-42
+
+POST /api/camps/ - Create Camp
+├─ API Function: lib/apiServices.ts:20-26
+│    create: async (data: CampInput): Promise<Camp> => {
+│      const response = await api.post('/api/camps/', data);
+│      return response.data;
+│    },
+├─ Modal: components/CampModal.tsx:1-270
+└─ Used in: app/camps/page.tsx:50-53
+
+GET /api/camps/{camp_id} - Get Camp
+├─ API Function: lib/apiServices.ts:28-34
+│    get: async (campId: string): Promise<Camp> => {
+│      const response = await api.get(`/api/camps/${campId}`);
+│      return response.data;
+│    },
+└─ Available for detail pages
+
+PUT /api/camps/{camp_id} - Update Camp
+├─ API Function: lib/apiServices.ts:36-42
+│    update: async (campId: string, data: CampInput): Promise<Camp> => {
+│      const response = await api.put(`/api/camps/${campId}`, data);
+│      return response.data;
+│    },
+└─ Used in: app/camps/page.tsx:55-61
+
+DELETE /api/camps/{camp_id} - Delete Camp
+├─ API Function: lib/apiServices.ts:44-50
+│    delete: async (campId: string): Promise<void> => {
+│      await api.delete(`/api/camps/${campId}`);
+│    },
+└─ Used in: app/camps/page.tsx:63-72
+
+================================================================================
+2. VOLUNTEERS ENDPOINTS
+================================================================================
+
+GET /api/volunteers/ - List Volunteers
+├─ API Function: lib/apiServices.ts:56-60
+│    list: async (): Promise<Volunteer[]> => {
+│      const response = await api.get('/api/volunteers/');
+│      return response.data;
+│    },
+└─ Used in: app/volunteers/page.tsx:32-40
+
+POST /api/volunteers/ - Create Volunteer
+├─ API Function: lib/apiServices.ts:62-68
+│    create: async (data: VolunteerInput): Promise<Volunteer> => {
+│      const response = await api.post('/api/volunteers/', data);
+│      return response.data;
+│    },
+├─ Modal: components/VolunteerModal.tsx:1-340
+└─ Used in: app/volunteers/page.tsx:47-50
+
+GET /api/volunteers/{volunteer_id} - Get Volunteer
+├─ API Function: lib/apiServices.ts:70-76
+│    get: async (volunteerId: string): Promise<Volunteer> => {
+│      const response = await api.get(`/api/volunteers/${volunteerId}`);
+│      return response.data;
+│    },
+└─ Available for detail pages
+
+PUT /api/volunteers/{volunteer_id} - Update Volunteer
+├─ API Function: lib/apiServices.ts:78-84
+│    update: async (volunteerId: string, data: VolunteerInput): Promise<Volunteer> => {
+│      const response = await api.put(`/api/volunteers/${volunteerId}`, data);
+│      return response.data;
+│    },
+└─ Used in: app/volunteers/page.tsx:52-58
+
+DELETE /api/volunteers/{volunteer_id} - Delete Volunteer
+├─ API Function: lib/apiServices.ts:86-92
+│    delete: async (volunteerId: string): Promise<void> => {
+│      await api.delete(`/api/volunteers/${volunteerId}`);
+│    },
+└─ Used in: app/volunteers/page.tsx:60-69
+
+================================================================================
+3. ASSIGNMENTS ENDPOINTS
+================================================================================
+
+GET /api/assignments/ - List Assignments
+├─ API Function: lib/apiServices.ts:98-102
+│    list: async (params?: { camp_id?: string; ... }): Promise<Assignment[]> => {
+│      const response = await api.get('/api/assignments/', { params });
+│      return response.data;
+│    },
+└─ Used in: app/assignments/page.tsx:48-54
+
+POST /api/assignments/ - Create Assignment
+├─ API Function: lib/apiServices.ts:104-110
+│    create: async (data: AssignmentInput): Promise<Assignment> => {
+│      const response = await api.post('/api/assignments/', data);
+│      return response.data;
+│    },
+├─ Modal: components/AssignmentModal.tsx:1-230
+└─ Used in: app/assignments/page.tsx:61-64
+
+GET /api/assignments/{assignment_id} - Get Assignment
+├─ API Function: lib/apiServices.ts:112-118
+│    get: async (assignmentId: string): Promise<Assignment> => {
+│      const response = await api.get(`/api/assignments/${assignmentId}`);
+│      return response.data;
+│    },
+└─ Available for detail pages
+
+PATCH /api/assignments/{assignment_id} - Update Assignment Status
+├─ API Function: lib/apiServices.ts:120-126
+│    updateStatus: async (assignmentId: string, status: string): Promise<Assignment> => {
+│      const response = await api.patch(`/api/assignments/${assignmentId}`, { status });
+│      return response.data;
+│    },
+└─ Used in: app/assignments/page.tsx:66-73
+   └─ Button: components/AssignmentCard.tsx:73-96
+
+DELETE /api/assignments/{assignment_id} - Delete Assignment
+├─ API Function: lib/apiServices.ts:128-134
+│    delete: async (assignmentId: string): Promise<void> => {
+│      await api.delete(`/api/assignments/${assignmentId}`);
+│    },
+└─ Used in: app/assignments/page.tsx:75-84
+
+================================================================================
+4. ACTIVITY LOGS ENDPOINT
+================================================================================
+
+GET /api/activity/camp/{camp_id} - Get Activity Logs
+├─ API Function: lib/apiServices.ts:140-146
+│    getCampActivity: async (campId: string): Promise<ActivityLog[]> => {
+│      const response = await api.get(`/api/activity/camp/${campId}`);
+│      return response.data;
+│    },
+└─ Available for activity log pages
+
+================================================================================
+5. NOTIFICATIONS ENDPOINT
+================================================================================
+
+POST /notify/whatsapp - Send WhatsApp Notification
+├─ API Function: lib/apiServices.ts:152-158
+│    sendWhatsApp: async (phone: string, message: string): Promise<any> => {
+│      const response = await api.post('/notify/whatsapp', { phone, message });
+│      return response.data;
+│    },
+└─ Available for notification features
+
+================================================================================
+6. AUTHENTICATION ENDPOINTS
+================================================================================
+
+POST /auth/login - Login
+└─ Used in: hooks/useAuth.ts (existing implementation)
+
+GET /auth/me - Get Me
+└─ Used in: hooks/useAuth.ts (existing implementation)
+
+================================================================================
+FORM VALIDATION MATCHING BACKEND SCHEMAS
+================================================================================
+
+CampInput Schema (from Swagger)
+✅ name: string [1, 200] → CampModal.tsx:119-127
+✅ location: string [1, 200] → CampModal.tsx:130-138
+✅ start: string (ISO 8601) → CampModal.tsx:142-152
+✅ end: string (ISO 8601) → CampModal.tsx:153-162
+✅ requirements: array<Requirement> → CampModal.tsx:167-229
+   ✅ role: string [1, 100] → CampModal.tsx:209
+   ✅ count: integer ≥ 0 → CampModal.tsx:214
+   ✅ slot: string [1, 50] → CampModal.tsx:219
+
+VolunteerInput Schema (from Swagger)
+✅ name: string [1, 200] → VolunteerModal.tsx:116-124
+✅ phone: string [10, 20] → VolunteerModal.tsx:127-137
+✅ skills: array<string> → VolunteerModal.tsx:140-174
+✅ availability: array<AvailabilitySlot> → VolunteerModal.tsx:237-310
+✅ no_show_rate: number [0, 1] → VolunteerModal.tsx:177-184
+
+AssignmentInput Schema (from Swagger)
+✅ camp_id: string → AssignmentModal.tsx:79-94
+✅ volunteer_id: string → AssignmentModal.tsx:97-111
+✅ role: string → AssignmentModal.tsx:114-138
+✅ slot: string → AssignmentModal.tsx:141-165
+✅ status: string → AssignmentModal.tsx:168-180
+✅ is_backup: boolean → AssignmentModal.tsx:183-192
+
+================================================================================
+AXIOS API CLIENT CONFIGURATION
+================================================================================
+
+Base Configuration: lib/api.ts:6-11
+├─ baseURL: http://localhost:8000
+├─ headers: Content-Type: application/json
+└─ Authentication interceptor: Adds Bearer token (lines 14-27)
+
+Request Interceptor (adds JWT token):
+└─ lib/api.ts:14-27
+
+Response Interceptor (handles 401):
+└─ lib/api.ts:29-42
+
+================================================================================
+UI COMPONENTS WITH CRUD ACTIONS
+================================================================================
+
+CampCard Component
+├─ File: components/CampCard.tsx
+├─ Props: camp, onEdit?, onDelete?
+├─ Edit button: line 95-101
+├─ Delete button: line 102-109
+└─ Actions called in: app/camps/page.tsx:61, 72
+
+VolunteerCard Component
+├─ File: components/VolunteerCard.tsx
+├─ Props: volunteer, onEdit?, onDelete?
+├─ Edit button: line 81-87
+├─ Delete button: line 88-95
+└─ Actions called in: app/volunteers/page.tsx:58, 69
+
+AssignmentCard Component
+├─ File: components/AssignmentCard.tsx
+├─ Props: assignment, onUpdateStatus?, onDelete?
+├─ Status menu: line 83-105
+├─ Delete button: line 107-114
+└─ Actions called in: app/assignments/page.tsx:73, 84
+
+================================================================================
+COMPLETE DATA FLOW EXAMPLE: CREATE CAMP
+================================================================================
+
+1. User clicks "Create Camp" button
+   └─ app/camps/page.tsx:93
+
+2. Modal opens with empty form
+   └─ components/CampModal.tsx:isOpen=true
+
+3. User fills form:
+   - Name: "Rural Health Camp 2024"
+   - Location: "Village Community Center"
+   - Start: "2024-12-01T09:00"
+   - End: "2024-12-01T17:00"
+   - Requirements: [{ role: "doctor", count: 2, slot: "morning" }]
+
+4. User clicks "Create Camp"
+   └─ CampModal.tsx:handleSubmit (line 47)
+
+5. Data sent to API
+   └─ campsApi.create(formData) → apiServices.ts:23
+
+6. POST request to backend
+   └─ axios.post('/api/camps/', data) → api.ts
+
+7. Backend creates camp and returns data
+
+8. Frontend refreshes camps list
+   └─ app/camps/page.tsx:fetchCamps (line 34)
+
+9. New camp appears in grid
+   └─ app/camps/page.tsx:106-112
+
+================================================================================
+STATUS: ALL ENDPOINTS MAPPED AND IMPLEMENTED ✅
+================================================================================
+

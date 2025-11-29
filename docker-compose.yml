@@ -1,0 +1,172 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: healthcare_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: agentic_volunteer
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - healthcare_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/agentic_volunteer --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis Cache & Message Broker
+  redis:
+    image: redis:7-alpine
+    container_name: healthcare_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - healthcare_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: redis-server --appendonly yes
+
+  # Backend API
+  backend:
+    build:
+      context: ./healthcare_agent/backend
+      dockerfile: Dockerfile
+    container_name: healthcare_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/agentic_volunteer
+      - DATABASE_NAME=agentic_volunteer
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-secret-key-change-in-production}
+      - JWT_ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=60
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      - TWILIO_WHATSAPP_FROM=${TWILIO_WHATSAPP_FROM}
+      - TWILIO_CONTENT_SID=${TWILIO_CONTENT_SID}
+      - NOTIFICATIONAPI_CLIENT_ID=${NOTIFICATIONAPI_CLIENT_ID}
+      - NOTIFICATIONAPI_CLIENT_SECRET=${NOTIFICATIONAPI_CLIENT_SECRET}
+      - CORS_ORIGINS=http://localhost:3000,http://frontend:3000
+      - RATE_LIMIT_PER_MINUTE=60
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - LLM_MODEL=${LLM_MODEL:-gpt-3.5-turbo}
+      - ENABLE_LLM_QUEUEING=${ENABLE_LLM_QUEUEING:-true}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - healthcare_network
+    volumes:
+      - ./healthcare_agent/backend/data:/app/data
+
+  # Celery Worker for Background Tasks
+  celery_worker:
+    build:
+      context: ./healthcare_agent/backend
+      dockerfile: Dockerfile
+    container_name: healthcare_celery_worker
+    restart: unless-stopped
+    command: celery -A app.celery_worker worker --loglevel=info --pool=solo
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/agentic_volunteer
+      - DATABASE_NAME=agentic_volunteer
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-secret-key-change-in-production}
+      - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+      - TWILIO_AUTH_TOKEN=${TWILIO_AUTH_TOKEN}
+      - TWILIO_PHONE_NUMBER=${TWILIO_PHONE_NUMBER}
+      - TWILIO_WHATSAPP_FROM=${TWILIO_WHATSAPP_FROM}
+      - TWILIO_CONTENT_SID=${TWILIO_CONTENT_SID}
+      - NOTIFICATIONAPI_CLIENT_ID=${NOTIFICATIONAPI_CLIENT_ID}
+      - NOTIFICATIONAPI_CLIENT_SECRET=${NOTIFICATIONAPI_CLIENT_SECRET}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - LLM_PROVIDER=${LLM_PROVIDER:-openai}
+      - LLM_MODEL=${LLM_MODEL:-gpt-3.5-turbo}
+      - ENABLE_LLM_QUEUEING=${ENABLE_LLM_QUEUEING:-true}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    networks:
+      - healthcare_network
+    volumes:
+      - ./healthcare_agent/backend/data:/app/data
+
+  # Celery Beat Scheduler
+  celery_beat:
+    build:
+      context: ./healthcare_agent/backend
+      dockerfile: Dockerfile
+    container_name: healthcare_celery_beat
+    restart: unless-stopped
+    command: celery -A app.celery_worker beat --loglevel=info
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/agentic_volunteer
+      - DATABASE_NAME=agentic_volunteer
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-secret-key-change-in-production}
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    networks:
+      - healthcare_network
+    volumes:
+      - ./healthcare_agent/backend/data:/app/data
+
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: healthcare_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_GRAPHQL_URL=http://localhost:8000/graphql
+    depends_on:
+      - backend
+    networks:
+      - healthcare_network
+
+networks:
+  healthcare_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+  redis_data:
+    driver: local
+
